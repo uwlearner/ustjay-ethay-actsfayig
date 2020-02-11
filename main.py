@@ -31,9 +31,13 @@ def home():
     fact = get_fact()
     pig_latinized = pig_latinize(fact)
 
-    body = re.sub('<head>', '<head>\n<style type ="text/css" >\n  .footer{\n      position:fixed;\n      bottom:10px;\n  }\n</style>', pig_latinized.text)
-    body = re.sub('</body>', '<p>URL: <a href={url}>{url}</a>\n\n<p><div class="footer">riginalOay actfay: {fact}</div></body>'.format(url=pig_latinized.url, fact=fact),
-                  body)
+    css_sub = ('<head>\n<style type ="text/css" >\n  .footer{\n      '
+               'position:fixed;\n      bottom:10px;\n  }\n</style>')
+    body_sub = ('<p>URL: <a href={url}>{url}</a>\n\n<p><div class="footer">'
+                'riginalOay actfay: {fact}</div></body>'.format(url=pig_latinized.url, fact=fact))
+    
+    body = re.sub('<head>', css_sub, pig_latinized.text)
+    body = re.sub('</body>', body_sub, body)
 
     return Response(response=body.encode('utf8'), mimetype="text/html")
 
